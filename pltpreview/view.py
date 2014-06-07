@@ -19,8 +19,9 @@ def show(image, blocking=False, **kwargs):
 def plot(*args, **kwargs):
     """Plot using matplotlib's ``plot`` function. Pass it *args* and *kwargs*.
     *kwargs* are infected with *blocking* and if False or not specified,
-    the call is nonblocking.
+    the call is nonblocking. This command always creates a new figure.
     """
     blocking = False if 'blocking' not in kwargs else kwargs.pop('blocking')
+    plt.figure()
     plt.plot(*args, **kwargs)
     plt.show(blocking)
