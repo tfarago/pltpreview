@@ -25,7 +25,7 @@ def plot(*args, **kwargs):
     sets the figure title. This command always creates a new figure. Returns
     a list of ``Line2D`` instances.
     """
-    blocking = False if 'blocking' not in kwargs else kwargs.pop('blocking')
+    blocking = kwargs.pop('blocking', False)
     title = kwargs.pop('title', '')
 
     plt.figure()
