@@ -1,1 +1,3 @@
-from view import show, plot
+"""Initialization"""
+
+from .view import show, plot
