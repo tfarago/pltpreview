@@ -11,6 +11,7 @@ def show(image, block=False, title='', **kwargs):
     """
     plt.figure()
     mpl_image = plt.imshow(image, **kwargs)
+    mpl_image.axes.format_coord = _FormatCoord(image)
     plt.colorbar(ticks=np.linspace(image.min(), image.max(), 8))
     plt.title(title)
     plt.show(block)
@@ -34,3 +35,22 @@ def plot(*args, **kwargs):
     plt.show(block)
 
     return lines
+
+
+class _FormatCoord(object):
+    """Coordinates formatter."""
+    def __init__(self, image):
+        self.image = image
+        self.height, self.width = self.image.shape
+
+    def __call__(self, x, y):
+        """Overrides matplotlib's default behavior on mouse motion,
+        *x* and *y* are planar coordinates.
+        """
+        col = int(x + 0.5)
+        row = int(y + 0.5)
+
+        if col >= 0 and col < self.height and row >= 0 and row < self.width:
+            return 'x={:<12.2f}y={:<12.2f}I={:<12.5f}'.format(x, y, self.image[row, col])
+        else:
+            return 'x={:<12.2f}y={:<12.2f}'.format(x, y)
