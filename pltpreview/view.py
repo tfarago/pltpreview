@@ -50,7 +50,7 @@ class _FormatCoord(object):
         col = int(x + 0.5)
         row = int(y + 0.5)
 
-        if col >= 0 and col < self.height and row >= 0 and row < self.width:
+        if col >= 0 and col < self.width and row >= 0 and row < self.height:
             return 'x={:<12.2f}y={:<12.2f}I={:<12.5f}'.format(x, y, self.image[row, col])
         else:
             return 'x={:<12.2f}y={:<12.2f}'.format(x, y)
