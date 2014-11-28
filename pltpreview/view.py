@@ -1,6 +1,6 @@
 """Convenience functions for matplotlib plotting and image viewing."""
 import numpy as np
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt, cm
 
 
 def show(image, block=False, title='', **kwargs):
@@ -10,6 +10,12 @@ def show(image, block=False, title='', **kwargs):
     ``AxesImage``.
     """
     plt.figure()
+
+    if 'cmap' not in kwargs:
+        kwargs['cmap'] = cm.gray
+    if 'interpolation' not in kwargs:
+        kwargs['interpolation'] = 'nearest'
+
     mpl_image = plt.imshow(image, **kwargs)
     mpl_image.axes.format_coord = _FormatCoord(image)
     plt.colorbar(ticks=np.linspace(image.min(), image.max(), 8))
