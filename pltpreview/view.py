@@ -52,7 +52,9 @@ class _FormatCoord(object):
         row = int(y + 0.5)
 
         if col >= 0 and col < self.width and row >= 0 and row < self.height:
-            value_str = self.value_fmt.format(self.image[row, col])
+            # The formatting doesn't like np.float32
+            value = float(self.image[row, col])
+            value_str = self.value_fmt.format(value)
             return 'x={:<12.2f}y={:<12.2f}{}'.format(x, y, value_str)
         else:
             return 'x={:<12.2f}y={:<12.2f}'.format(x, y)
