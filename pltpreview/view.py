@@ -29,15 +29,20 @@ def plot(*args, **kwargs):
     """Plot using matplotlib's ``plot`` function. Pass it *args* and *kwargs*.  *kwargs* are
     infected with *block* and if False or not specified, the call is nonblocking. *title* is alowed
     to be in *kwargs* which sets the figure title. *grid* can be in kwargs which is a boolean
-    turning the grid on or off. This command always creates a new figure. Returns a list of
-    ``Line2D`` instances.  """
+    turning the grid on or off. *xlabel* and *ylabel* define the x and y axes labels if specified in
+    *kwargs*. This command always creates a new figure. Returns a list of ``Line2D`` instances.
+    """
     block = kwargs.pop('block', False)
     title = kwargs.pop('title', '')
+    xlabel = kwargs.pop('xlabel', '')
+    ylabel = kwargs.pop('ylabel', '')
     grid = kwargs.pop('grid', False)
 
     plt.figure()
     lines = plt.plot(*args, **kwargs)
     plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
     plt.grid(grid)
     plt.show(block)
 
