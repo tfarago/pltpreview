@@ -36,7 +36,7 @@ def plot(*args, **kwargs):
     title = kwargs.pop('title', '')
     xlabel = kwargs.pop('xlabel', '')
     ylabel = kwargs.pop('ylabel', '')
-    grid = kwargs.pop('grid', False)
+    grid = kwargs.pop('grid', True)
 
     plt.figure()
     lines = plt.plot(*args, **kwargs)
