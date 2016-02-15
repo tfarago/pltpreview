@@ -1,4 +1,5 @@
 """Convenience functions for matplotlib plotting and image viewing."""
+import collections
 import numpy as np
 from matplotlib import pyplot as plt, cm
 
@@ -53,7 +54,7 @@ class _FormatCoord(object):
     """Coordinates formatter."""
     def __init__(self, image):
         self.image = image
-        self.height, self.width = self.image.shape
+        self.shape = self.image.shape
         self.value_fmt = determine_intensity_format(self.image[0, 0])
 
     def __call__(self, x, y):
@@ -63,10 +64,14 @@ class _FormatCoord(object):
         col = int(x + 0.5)
         row = int(y + 0.5)
 
-        if col >= 0 and col < self.width and row >= 0 and row < self.height:
+        if (col >= 0 and col < self.image.shape[1] and
+                row >= 0 and row < self.image.shape[0]):
             # The formatting doesn't like np.float32
-            value = float(self.image[row, col])
-            value_str = self.value_fmt.format(value)
+            if self.image.ndim == 2:
+                value = (float(self.image[row, col]),)
+            else:
+                value = self.image[row, col]
+            value_str = self.value_fmt.format(*value)
             return 'x={:<12.2f}y={:<12.2f}{}'.format(x, y, value_str)
         else:
             return 'x={:<12.2f}y={:<12.2f}'.format(x, y)
@@ -74,8 +79,10 @@ class _FormatCoord(object):
 
 def determine_intensity_format(number):
     """Get format string based on *number*'s data type."""
-    if isinstance(number, (float, np.float, np.float16, np.float32,
-                           np.float64, np.float128)):
+    if isinstance(number, collections.Iterable):
+        fmt = 'RGB={:>03},{:>03},{:>03}'
+    elif isinstance(number, (float, np.float, np.float16, np.float32,
+                             np.float64, np.float128)):
         fmt = 'I={:<12.5f}'
     else:
         fmt = 'I={:<12}'
