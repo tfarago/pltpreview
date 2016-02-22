@@ -5,11 +5,17 @@ from matplotlib import pyplot as plt, cm
 
 
 def show(image, block=False, title='', **kwargs):
-    """Show *image*. If *block* is False the call is nonblocking. *title*
-    is the image title.  *kwargs* are passed to matplotlib's ``imshow``
-    function. This command always creates a new figure. Returns matplotlib's
-    ``AxesImage``.
+    """Show *image*. If *block* is False the call is nonblocking. *title* is the image title.
+    *kwargs* are passed to matplotlib's ``imshow`` function. This command always creates a new
+    figure. Returns matplotlib's ``AxesImage``.
+    *image* can have physical units in which case it must contain attribute *magnitude* and *units*.
+    If it does, image is stripped off units and passed to matplotlib and units are shown as x label.
     """
+    xlabel = ''
+    if hasattr(image, 'magnitude'):
+        xlabel = str(image.units)
+        image = image.magnitude
+
     plt.figure()
 
     if 'cmap' not in kwargs:
@@ -24,6 +30,7 @@ def show(image, block=False, title='', **kwargs):
     if mx - mn > np.finfo(np.float).eps:
         plt.colorbar(ticks=np.linspace(mn, mx, 8))
     plt.title(title)
+    plt.xlabel(xlabel)
     plt.show(block)
 
     return mpl_image
