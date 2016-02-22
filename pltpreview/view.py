@@ -19,7 +19,10 @@ def show(image, block=False, title='', **kwargs):
 
     mpl_image = plt.imshow(image, **kwargs)
     mpl_image.axes.format_coord = _FormatCoord(image)
-    plt.colorbar(ticks=np.linspace(image.min(), image.max(), 8))
+    mn = image.min()
+    mx = image.max()
+    if mx - mn > np.finfo(np.float).eps:
+        plt.colorbar(ticks=np.linspace(mn, mx, 8))
     plt.title(title)
     plt.show(block)
 
