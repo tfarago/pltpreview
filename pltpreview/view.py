@@ -1,7 +1,7 @@
 """Convenience functions for matplotlib plotting and image viewing."""
 import collections
 import numpy as np
-from matplotlib import pyplot as plt, cm
+from matplotlib import pyplot as plt
 
 
 def show(image, block=False, title='', **kwargs):
@@ -10,11 +10,25 @@ def show(image, block=False, title='', **kwargs):
     figure. Returns matplotlib's ``AxesImage``.
     *image* can have physical units in which case it must contain attribute *magnitude* and *units*.
     If it does, image is stripped off units and passed to matplotlib and units are shown as x label.
+    You can specify a keyword argument *clim* which can be either 'auto', a number or a tuple. If it
+    is 'auto' then the first and last 0.1 percent of the values are trimmed from the displayed
+    image, which is useful when the object of interest has narrow dynamic range in comparison to the
+    overall image. If it is a number you specify the percentile yourself. It it is a tuple it means
+    you specify the minimum and maximum yourself.
     """
     xlabel = ''
     if hasattr(image, 'magnitude'):
         xlabel = str(image.units)
         image = image.magnitude
+    clim = kwargs.pop('clim', None)
+    if not (clim is None or isinstance(clim, tuple)):
+        # Use 0.1 % for *auto* mode
+        percentile = clim if clim != 'auto' else .1
+        hist, bins = np.histogram(image, bins=256)
+        cumsum = np.cumsum(hist) / float(np.sum(hist)) * 100
+        valid = bins[np.where((cumsum > percentile) & (cumsum < 100 - percentile))]
+        clim = (valid[0], valid[-1])
+    kwargs['clim'] = clim
 
     plt.figure()
     mpl_image = plt.imshow(image, **kwargs)
