@@ -17,12 +17,6 @@ def show(image, block=False, title='', **kwargs):
         image = image.magnitude
 
     plt.figure()
-
-    if 'cmap' not in kwargs:
-        kwargs['cmap'] = cm.gray
-    if 'interpolation' not in kwargs:
-        kwargs['interpolation'] = 'nearest'
-
     mpl_image = plt.imshow(image, **kwargs)
     mpl_image.axes.format_coord = _FormatCoord(image)
     mn = image.min()
