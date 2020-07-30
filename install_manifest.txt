@@ -1,0 +1,4 @@
+/home/tomas/virtenvs/concert/bin/f2py
+/home/tomas/virtenvs/concert/bin/f2py3
+/home/tomas/virtenvs/concert/bin/f2py3.8
+/home/tomas/virtenvs/concert/lib/python3.8/site-packages/pltpreview-0.1-py3.8.egg
