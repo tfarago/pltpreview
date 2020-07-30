@@ -33,8 +33,8 @@ def show(image, block=False, title='', **kwargs):
     plt.figure()
     mpl_image = plt.imshow(image, **kwargs)
     mpl_image.axes.format_coord = _FormatCoord(image)
-    mn = image.min()
-    mx = image.max()
+    mn = np.nanmin(image)
+    mx = np.nanmax(image)
     if mx - mn > np.finfo(np.float).eps:
         plt.colorbar(ticks=np.linspace(mn, mx, 8))
     plt.title(title)
