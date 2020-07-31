@@ -36,7 +36,7 @@ def show(image, block=False, title='', **kwargs):
     mn = np.nanmin(image)
     mx = np.nanmax(image)
     if mx - mn > np.finfo(np.float).eps:
-        orientation = 'horizontal' if image.shape[1] > image.shape[0] else 'vertical'
+        orientation = 'horizontal' if image.shape[1] / 2 > image.shape[0] else 'vertical'
         plt.colorbar(ticks=np.linspace(mn, mx, 8), orientation=orientation)
     plt.title(title)
     plt.xlabel(xlabel)
